@@ -9,6 +9,9 @@ import jsonbreadcrumbs_parser as parser
 from sublime_utils import RegionStream
 from events import SYNTAX_CHANGE, SELECTION_MODIFIED
 
+SIMPLE_SCOPES = ['constant.numeric.json',
+                 'constant.language.json',
+                 'string.quoted.double.json']
 
 class JsonWhereCommand(sublime_plugin.TextCommand):
     def run(self, edit, **kwargs):
@@ -21,12 +24,13 @@ class JsonWhereCommand(sublime_plugin.TextCommand):
                 for region in self.view.sel():
                     path = ''
                     if region.begin() != 0:
-                        local_scope = self.view.extract_scope(region.begin())
+                        local_scope_region = self.view.extract_scope(region.begin())
+                        local_scope_name = self.view.scope_name(region.begin())
 
-                        left_region = sublime.Region(0,region.begin()+1)
-                        # print local_scope, self.view.scope_name(region.begin()), left_region
-                        if left_region.intersects(local_scope):
-                            left_region = left_region.cover(local_scope)
+                        left_region = sublime.Region(0,region.begin())
+                        # print local_scope_region, local_scope_name, left_region
+                        if any(simple_scope in local_scope_name for simple_scope in SIMPLE_SCOPES):
+                            left_region = left_region.cover(local_scope_region)
 
                         path = get_jpath_at_end_of_region(self.view, left_region)
 
