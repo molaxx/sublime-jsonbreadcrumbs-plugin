@@ -5,9 +5,7 @@ import os
 import sublime
 import sublime_plugin
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "dist"))
-
-import parser
+import jsonbreadcrumbs_parser as parser
 from sublime_utils import RegionStream
 from events import SYNTAX_CHANGE, SELECTION_MODIFIED
 
