@@ -1,0 +1,16 @@
+[
+    {
+        "keys": [
+            "ctrl+j",
+            "ctrl+c"
+        ],
+        "command": "copy_json_breadcrumb",
+        "context": [
+            {
+                "key": "selector",
+                "operator": "equal",
+                "operand": "source.json"
+            }
+        ]
+    }
+]
