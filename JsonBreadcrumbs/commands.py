@@ -9,9 +9,16 @@ import jsonbreadcrumbs_parser as parser
 from sublime_utils import RegionStream
 from events import SYNTAX_CHANGE, SELECTION_MODIFIED
 
+STATUS_KEY = 'jbc'
 SIMPLE_SCOPES = ['constant.numeric.json',
                  'constant.language.json',
                  'string.quoted.double.json']
+
+class CopyJsonBreadcrumbCommand(sublime_plugin.TextCommand):
+    def run(self, edit):
+        if 'JSON' in self.view.settings().get('syntax'):
+            sublime.set_clipboard(self.view.get_status(STATUS_KEY))
+
 
 class JsonWhereCommand(sublime_plugin.TextCommand):
     def run(self, edit, **kwargs):
@@ -19,7 +26,7 @@ class JsonWhereCommand(sublime_plugin.TextCommand):
         # for region in self.view.sel()
         if events & (SYNTAX_CHANGE | SELECTION_MODIFIED):
             if not self.is_syntax_json():
-                self.view.erase_status('xjpath')
+                self.view.erase_status(STATUS_KEY)
             else:
                 for region in self.view.sel():
                     path = ''
@@ -34,7 +41,7 @@ class JsonWhereCommand(sublime_plugin.TextCommand):
 
                         path = get_jpath_at_end_of_region(self.view, left_region)
 
-                    self.view.set_status('xjpath',path)
+                    self.view.set_status(STATUS_KEY,path)
                     break;
 
     def is_syntax_json(self):
