@@ -22,7 +22,9 @@ class JsonWhereCommand(sublime_plugin.TextCommand):
                     path = ''
                     if region.begin() != 0:
                         local_scope = self.view.extract_scope(region.begin())
+
                         left_region = sublime.Region(0,region.begin()+1)
+                        # print local_scope, self.view.scope_name(region.begin()), left_region
                         if left_region.intersects(local_scope):
                             left_region = left_region.cover(local_scope)
 

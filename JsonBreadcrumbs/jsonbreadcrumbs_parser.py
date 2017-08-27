@@ -63,6 +63,7 @@ class ContentHandler(YajlContentHandler):
         self.path.pop()
 
     def yajl_start_array(self, ctx):
+        self._check_handle_value_in_array()
         self.path.append(Array())
     
     def yajl_end_array(self, ctx):
@@ -138,11 +139,10 @@ def test():
     test_case('["kaki",1,{"k":[{"hi":[]',"$[2]['k'][0]['hi']","deep 3")
     test_case('["kaki",1,{"k":[{"hi":["2","3","4"',"$[2]['k'][0]['hi'][2]","deep 3")
 
+    test_case('[[0],[', "$[1][0]", "second member is array after nested array")
+    test_case('[[0],[1]', "$[1]", "after second member array after nested array")
 
-
-
-
-
+    test_case('{"flags":[["archive",1],["data",43]', "$['flags'][1]", "bug")
     print "ALL OK!"
 test()
 
