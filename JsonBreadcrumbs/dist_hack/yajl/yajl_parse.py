@@ -1,7 +1,6 @@
 '''
 Code that allows use of api/yajl_parse.h
 '''
-
 import sys
 import six
 from abc import ABCMeta, abstractmethod
@@ -258,8 +257,9 @@ class YajlParser(object):
                             raise YajlParseCancelled()
                     else:
                         yajl.yajl_get_error.restype = c_char_p
-                        error = yajl.yajl_get_error(
-                            hand, 1, fileData, len(fileData))
+                        error= b'premature EOF'
+                        # error = yajl.yajl_get_error(
+                        #     hand, 1, fileData, len(fileData))
                         # in python3 error is bytes so must be encoded
                         # to something printable
                         error = error.decode('latin-1')

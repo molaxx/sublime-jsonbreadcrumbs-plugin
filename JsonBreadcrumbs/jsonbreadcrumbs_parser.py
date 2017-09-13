@@ -1,9 +1,11 @@
 import os
 import sys
+#import imp
+
 BASEPATH = os.path.dirname(os.path.realpath(__file__))
 sys.path = [BASEPATH, '%s/dist_hack' %BASEPATH] + sys.path
 from yajl import YajlContentHandler, YajlParser, YajlError
-
+#imp.reload(sys.modules['yajl.yajl_parse'])
 
 def get_path(json_stream):
     path_getter = ContentHandler()
@@ -15,7 +17,8 @@ def get_path(json_stream):
             pass
         else:
             return 'invalid json'
-    return path_getter.get_path()
+    path = path_getter.get_path()
+    return path
 
 
 class ContentHandler(YajlContentHandler):
@@ -74,7 +77,7 @@ class Map(object):
         self.currKey = ''
 
     def current_key(self,key):
-        self.currKey = "['{0}']".format(key)
+        self.currKey = "['{0}']".format(key.decode('utf-8'))
     
     def __str__(self):
         return self.currKey
@@ -94,14 +97,19 @@ class Array(object):
 
 
 
-
-import StringIO
+try:
+    import StringIO.StringIO
+except ImportError:
+    from io import BytesIO as StringIO
 
 def F(name, excpected, actual):
     return name + " Failed: excpected: {0}, actual: {1}".format(excpected,actual)
 
 def test_case(input, excpected, description):
-    json = StringIO.StringIO(input)
+    if bytes != str:
+        input = bytes(input,'utf-8')
+    json = StringIO(input)
+
     actual = get_path(json)
     assert actual == excpected, F(description, excpected, actual)
 
@@ -143,7 +151,7 @@ def test():
     test_case('[[0],[1]', "$[1]", "after second member array after nested array")
 
     test_case('{"flags":[["archive",1],["data",43]', "$['flags'][1]", "bug")
-    print "ALL OK!"
+    print ("ALL OK!")
 test()
 
 
