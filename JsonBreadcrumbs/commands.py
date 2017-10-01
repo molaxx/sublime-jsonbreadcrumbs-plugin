@@ -5,9 +5,10 @@ import os
 import sublime
 import sublime_plugin
 
-import jsonbreadcrumbs_parser as parser
-from sublime_utils import RegionStream
-from events import SYNTAX_CHANGE, SELECTION_MODIFIED
+from .utils import jsonbreadcrumbs_parser as parser
+
+from .utils.sublime_utils import RegionStream
+from .utils.event_types import SYNTAX_CHANGE, SELECTION_MODIFIED
 
 STATUS_KEY = 'jbc'
 SIMPLE_SCOPES = ['constant.numeric.json',

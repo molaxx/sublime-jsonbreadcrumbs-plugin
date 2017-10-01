@@ -7,17 +7,7 @@ try:
 except AttributeError:
     set_timeout = sublime.set_timeout
 
-
-NEW = 1
-CLONE = 2
-LOAD = 4
-PRE_SAVE = 8
-POST_SAVE = 16
-MODIFIED = 32
-SELECTION_MODIFIED = 64
-ACTIVATED = 128
-DEACTIVATED = 256
-SYNTAX_CHANGE = 512
+from .utils.event_types import *
 
 class JsonWhereEventListener(sublime_plugin.EventListener):
     def __init__(self):
