@@ -36,14 +36,16 @@ class JsonWhereCommand(sublime_plugin.TextCommand):
                         local_scope_name = self.view.scope_name(region.begin())
 
                         left_region = sublime.Region(0,region.begin())
-                        # print local_scope_region, local_scope_name, left_region
+#                        print(local_scope_region, local_scope_name)
+#                        print (left_region)
                         if any(simple_scope in local_scope_name for simple_scope in SIMPLE_SCOPES):
                             left_region = left_region.cover(local_scope_region)
 
                         path = get_jpath_at_end_of_region(self.view, left_region)
-
-                    self.view.set_status(STATUS_KEY,path)
-                    break;
+#                        print(path)
+                        
+                        self.view.set_status(STATUS_KEY,path)
+                        break;
 
     def is_syntax_json(self):
         return 'JSON' in self.view.settings().get('syntax')
